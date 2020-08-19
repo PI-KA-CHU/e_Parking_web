@@ -1,6 +1,6 @@
 import React from 'react'
-import { Radio } from '@ant-design/icons';
-import {CarFilled} from 'antd'
+import { CarFilled} from '@ant-design/icons';
+import { Radio } from 'antd'
 
 class ParkingPositionItem extends React.Component{
     
