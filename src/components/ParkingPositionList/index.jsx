@@ -1,27 +1,47 @@
-import React from 'react'
-import ParkingPositionItem from '../ParkingPositionItem'
+import React from "react";
+import ParkingPositionItem from "../ParkingPositionItem";
+import { getAllParkingPosition } from "../../apis/index";
+import { Button, Radio } from "antd";
+import { Link } from "react-router-dom";
 
-class ParkingPositionList extends React.Component{
+class ParkingPositionList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      parkingPostion: [],
+      parkingLotId: 1,
+    };
+  }
 
-    parkingPostion = [
-        {id: 1,status:1},
-        {id:2,status:0},
-        {id:3,status:0},
-        {id:4,status:0},
-        {id:5,status:0},
-    ];
+  componentDidMount() {
+    getAllParkingPosition(this.state.parkingLotId).then((res) => {
+      this.setState({
+        parkingPostion: res.data,
+      });
+    });
+  }
 
-    render() {
-        return (
-            this.parkingPostion.map(item => {
-                return (
-                    <div>
-                        <ParkingPositionItem index={item.id} status={item.status}/>
-                    </div>
-                )
-            })
-        )
+  render() {
+    if (this.state.parkingPostion) {
+      return (
+        <div>
+          <Radio.Group>
+            {this.state.parkingPostion.map((item) => (
+              <ParkingPositionItem
+                key={item.id}
+                index={item.id}
+                status={item.status}
+              />
+            ))}
+          </Radio.Group>
+          <Link to="/order">
+            <Button type="primary">Submit</Button>
+          </Link>
+        </div>
+      );
     }
+    return null;
+  }
 }
 
 export default ParkingPositionList;
