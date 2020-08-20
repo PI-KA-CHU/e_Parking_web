@@ -10,6 +10,7 @@ class ParkingPositionList extends React.Component {
     this.state = {
       parkingPostion: [],
       parkingLotId: 1,
+      positionindex: -1,
     };
   }
 
@@ -21,11 +22,17 @@ class ParkingPositionList extends React.Component {
     });
   }
 
+  changePosition = (e) => {
+    this.setState({
+      positionindex: e.target.value,
+    });
+  };
+
   render() {
     if (this.state.parkingPostion) {
       return (
         <div>
-          <Radio.Group>
+          <Radio.Group onChange={this.changePosition}>
             {this.state.parkingPostion.map((item) => (
               <ParkingPositionItem
                 key={item.id}
@@ -34,7 +41,12 @@ class ParkingPositionList extends React.Component {
               />
             ))}
           </Radio.Group>
-          <Link to="/order">
+          <Link
+            to={{
+              pathname: "/order",
+              state: { positionindex: this.state.positionindex },
+            }}
+          >
             <Button type="primary">Submit</Button>
           </Link>
         </div>
