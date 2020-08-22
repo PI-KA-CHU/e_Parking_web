@@ -7,6 +7,8 @@ import {
 } from "../../apis/index";
 import { Button, Radio, Modal } from "antd";
 import { Link } from "react-router-dom";
+import Websocket from "react-websocket";
+
 
 class ParkingPositionList extends React.Component {
   constructor(props) {
@@ -47,19 +49,31 @@ class ParkingPositionList extends React.Component {
       } else {
         this.error(res.response.data);
       }
+      this.refWebSocket.sendMessage("reserve parkingPosition");
     });
   };
 
-  error = (msg) => {
-    Modal.error({
-      title: msg,
+  handleMessage = (data) => {
+    console.log("[recieve message]：" + data);
+    getAllParkingPosition(this.state.parkingLotId).then((res) => {
+      this.setState({
+        parkingPostion: res.data,
+      });
     });
-  };
+  }
 
   render() {
     if (this.state.parkingPostion) {
       return (
         <div>
+          <Websocket
+            url="ws://localhost:8088/websocket/27"
+            onMessage={this.handleMessage}
+            ref={(websocketMsg) => {
+              this.refWebSocket = websocketMsg;
+            }}
+          />
+
           <Radio.Group onChange={this.changePosition} buttonStyle="solod">
             {this.state.parkingPostion.map((item) => (
               <ParkingPositionItem
