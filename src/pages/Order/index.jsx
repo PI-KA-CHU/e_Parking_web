@@ -72,7 +72,6 @@ class Order extends React.Component {
           formNumber:
             order.customerId + order.carId + this.state.parkingLotId * 100,
         });
-        debugger;
         this.success("Reserved a space successfully");
       } else {
         this.error(res.response.data);

@@ -1,13 +1,18 @@
 import React from "react";
 import ParkingPositionItem from "../ParkingPositionItem";
-import { getAllParkingPosition, getUserInfo } from "../../apis/index";
-import { Button, Radio } from "antd";
+import {
+  getAllParkingPosition,
+  getUserInfo,
+  reserveParkingPosition,
+} from "../../apis/index";
+import { Button, Radio, Modal } from "antd";
 import { Link } from "react-router-dom";
 
 class ParkingPositionList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isSelected: false,
       parkingPostion: [],
       parkingLotId: 1,
       positionindex: -1,
@@ -32,6 +37,22 @@ class ParkingPositionList extends React.Component {
   changePosition = (e) => {
     this.setState({
       positionindex: e.target.value,
+      isSelected: true,
+    });
+  };
+
+  handleSubmit = () => {
+    reserveParkingPosition(this.state.positionindex).then((res) => {
+      if (res.status === 200) {
+      } else {
+        this.error(res.response.data);
+      }
+    });
+  };
+
+  error = (msg) => {
+    Modal.error({
+      title: msg,
     });
   };
 
@@ -58,7 +79,13 @@ class ParkingPositionList extends React.Component {
               },
             }}
           >
-            <Button type="primary">Submit</Button>
+            <Button
+              type="primary"
+              disabled={!this.state.isSelected}
+              onClick={this.handleSubmit}
+            >
+              Submit
+            </Button>
           </Link>
         </div>
       );
