@@ -49,8 +49,8 @@ class ParkingPositionList extends React.Component {
       } else {
         this.error(res.response.data);
       }
-      this.refWebSocket.sendMessage("reserve parkingPosition");
     });
+    this.refWebSocket.sendMessage("reserve parkingPosition");
   };
 
   handleMessage = (data) => {
@@ -61,6 +61,7 @@ class ParkingPositionList extends React.Component {
       });
     });
   }
+
 
   render() {
     if (this.state.parkingPostion) {
@@ -73,7 +74,6 @@ class ParkingPositionList extends React.Component {
               this.refWebSocket = websocketMsg;
             }}
           />
-
           <Radio.Group onChange={this.changePosition} buttonStyle="solod">
             {this.state.parkingPostion.map((item) => (
               <ParkingPositionItem
