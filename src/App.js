@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Reserve from './pages/Reserve'
 import Order from './pages/Order'
 import {HashRouter, Route} from 'react-router-dom'
+import '../node_modules/antd/dist/antd.css'
 
 function App() {
   return (

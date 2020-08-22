@@ -1,6 +1,6 @@
 import React from "react";
 import ParkingPositionItem from "../ParkingPositionItem";
-import { getAllParkingPosition } from "../../apis/index";
+import { getAllParkingPosition, getUserInfo } from "../../apis/index";
 import { Button, Radio } from "antd";
 import { Link } from "react-router-dom";
 
@@ -11,6 +11,8 @@ class ParkingPositionList extends React.Component {
       parkingPostion: [],
       parkingLotId: 1,
       positionindex: -1,
+      userInfo: {},
+      userId: 27,
     };
   }
 
@@ -18,6 +20,11 @@ class ParkingPositionList extends React.Component {
     getAllParkingPosition(this.state.parkingLotId).then((res) => {
       this.setState({
         parkingPostion: res.data,
+      });
+    });
+    getUserInfo(this.state.userId).then((res) => {
+      this.setState({
+        userInfo: res.data,
       });
     });
   }
@@ -32,7 +39,7 @@ class ParkingPositionList extends React.Component {
     if (this.state.parkingPostion) {
       return (
         <div>
-          <Radio.Group onChange={this.changePosition}>
+          <Radio.Group onChange={this.changePosition} buttonStyle="solod">
             {this.state.parkingPostion.map((item) => (
               <ParkingPositionItem
                 key={item.id}
@@ -44,7 +51,11 @@ class ParkingPositionList extends React.Component {
           <Link
             to={{
               pathname: "/order",
-              state: { positionindex: this.state.positionindex },
+              state: {
+                positionindex: this.state.positionindex,
+                userInfo: this.state.userInfo,
+                parkingLotId: this.state.parkingLotId,
+              },
             }}
           >
             <Button type="primary">Submit</Button>
