@@ -1,11 +1,14 @@
 import React from "react";
 
-import { Button, TimePicker, Select, Modal, Divider, message } from "antd";
+import { Button, TimePicker, Select, Modal, Divider, message, Layout } from "antd";
 import { createOrder } from "../../apis/index";
 import moment from "moment";
 import "../Order/index.css";
 import { FormOutlined } from "@ant-design/icons";
 import Websocket from "react-websocket";
+import QueueAnim from 'rc-queue-anim';
+
+const { Header } = Layout;
 const { Option } = Select;
 
 class Order extends React.Component {
@@ -45,7 +48,7 @@ class Order extends React.Component {
     }
   }
 
-  handleMessage = (data) => {};
+  handleMessage = (data) => { };
 
   formatTime = (t) => {
     if (t < 10) return `0${t}`;
@@ -122,65 +125,77 @@ class Order extends React.Component {
     const { username, phoneNumber, cars } = this.state.userInfo;
 
     return (
-      <div className="creorder">
-        <Websocket
-          url={`ws://localhost:8088/websocket/${sessionStorage.getItem(
-            "userId"
-          )}`}
-          onMessage={this.handleMessage}
-          ref={(websocketMsg) => {
-            this.orderWebSocket = websocketMsg;
-          }}
-        />
-        <h1>
-          <FormOutlined style={{ marginRight: "10px" }} />
+      <div>
+        <Header>
+          <div id="logo">
+            <img src={require("../../image/logowhite.png")} />
+          </div>
+        </Header>
+        
+        <div className="creorder">
+          <Websocket
+            url={`ws://localhost:8088/websocket/${sessionStorage.getItem(
+              "userId"
+            )}`}
+            onMessage={this.handleMessage}
+            ref={(websocketMsg) => {
+              this.orderWebSocket = websocketMsg;
+            }}
+          />
+          <h1>
+            <FormOutlined style={{ marginRight: "10px" }} />
           create order
         </h1>
-        <Divider style={{ marginBottom: "40px" }} />
-        <div className="box">
-          <h3>Parking Lot Infomation</h3>
-          <label>Parking Lot Name : South Software Park Parking lot</label>
-          <br />
-          <label>Parking Space Number : {this.state.parkingnumber}</label>
-        </div>
-        <div className="box">
-          <h3>Arrival Time</h3>
-          <TimePicker
-            value={this.state.timePickerValue}
-            defaultValue={moment("00:00:00", "HH:mm:ss")}
-            onChange={this.handleTimeChange}
-            style={{ marginLeft: "30px", width: "170px" }}
-            disabledHours={this.getDisabledHours}
-            hideDisabledOptions={true}
-          />
-        </div>
-        <div className="box">
-          <h3>Personal Infomation</h3>
-          <label>Name : {username}</label>
-          <br />
-          <label>Phone Number : {phoneNumber}</label>
-          <br />
-          <label>License Number : </label>
-          <Select onChange={this.handleChangeCarNumber} style={{ width: "8%" }}>
-            {(cars || []).map((item) => (
-              <Option value={item.carNumber} key={item.id}>
-                {item.carNumber}
-              </Option>
-            ))}
-          </Select>
-        </div>
-        <div className="btn">
-          <Button
-            type="primary"
-            htmlType="submit"
-            onClick={this.handleSubmit}
-            style={{ width: "6%", height: "40px" }}
-            disabled={this.state.isSubmit}
-          >
-            Submit
+          <Divider style={{ marginBottom: "40px" }} />
+          <QueueAnim delay={300} className="queue-simple">
+            <div className="box" key="1">
+              <h3>Parking Lot Infomation</h3>
+              <label>Parking Lot Name : South Software Park Parking lot</label>
+              <br />
+              <label>Parking Space Number : {this.state.parkingnumber}</label>
+            </div>
+            <div className="box" key="2">
+              <h3>Arrival Time</h3>
+              <TimePicker
+                value={this.state.timePickerValue}
+                defaultValue={moment("00:00:00", "HH:mm:ss")}
+                onChange={this.handleTimeChange}
+                style={{ marginLeft: "30px", width: "170px" }}
+                disabledHours={this.getDisabledHours}
+                hideDisabledOptions={true}
+              />
+            </div>
+            <div className="box" key="3">
+              <h3>Personal Infomation</h3>
+              <label>Name : {username}</label>
+              <br />
+              <label>Phone Number : {phoneNumber}</label>
+              <br />
+              <label>License Number : </label>
+              <Select onChange={this.handleChangeCarNumber} style={{ width: "8%" }}>
+                {(cars || []).map((item) => (
+                  <Option value={item.carNumber} key={item.id}>
+                    {item.carNumber}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+            <div className="btn" key="4">
+              <Button
+                type="primary"
+                htmlType="submit"
+                onClick={this.handleSubmit}
+                style={{ width: "6%", height: "40px" }}
+                disabled={this.state.isSubmit}
+              >
+                Submit
           </Button>
+            </div>
+          </QueueAnim>
+
         </div>
       </div>
+
     );
   }
 }
