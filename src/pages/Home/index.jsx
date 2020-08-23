@@ -6,9 +6,8 @@ import style from "./home.css";
 class Home extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { inputTitle: "Please enter your id" };
+    this.state = { inputTitle: "Please enter your id", userId: "" };
   }
-  // South Software Park Parking lot
 
   showModal = () => {
     this.setState({
@@ -25,7 +24,10 @@ class Home extends React.Component {
   handleOk = (e) => {
     getUserInfo(this.state.userId).then((res) => {
       if (res.status === 200) {
-        this.props.history.push("/reserve");
+        this.props.history.push({
+          pathname: "/reserve",
+          state: { userId: this.state.userId },
+        });
 
         this.setState({
           visible: false,

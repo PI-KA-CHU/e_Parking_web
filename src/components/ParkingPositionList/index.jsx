@@ -9,7 +9,6 @@ import { Button, Radio, Modal } from "antd";
 import { Link } from "react-router-dom";
 import Websocket from "react-websocket";
 
-
 class ParkingPositionList extends React.Component {
   constructor(props) {
     super(props);
@@ -19,17 +18,17 @@ class ParkingPositionList extends React.Component {
       parkingLotId: 1,
       positionindex: -1,
       userInfo: {},
-      userId: 27,
     };
   }
 
   componentDidMount() {
+    let { userId } = this.props;
     getAllParkingPosition(this.state.parkingLotId).then((res) => {
       this.setState({
         parkingPostion: res.data,
       });
     });
-    getUserInfo(this.state.userId).then((res) => {
+    getUserInfo(userId).then((res) => {
       this.setState({
         userInfo: res.data,
       });
@@ -60,8 +59,7 @@ class ParkingPositionList extends React.Component {
         parkingPostion: res.data,
       });
     });
-  }
-
+  };
 
   render() {
     if (this.state.parkingPostion) {
