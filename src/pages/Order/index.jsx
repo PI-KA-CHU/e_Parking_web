@@ -110,6 +110,14 @@ class Order extends React.Component {
     });
   };
 
+  getDisabledHours = () => {
+    var hours = [];
+    for (var i = 0; i < moment().hour(); i++) {
+      hours.push(i);
+    }
+    return hours;
+  };
+
   render() {
     const { username, phoneNumber, cars } = this.state.userInfo;
 
@@ -142,6 +150,8 @@ class Order extends React.Component {
             defaultValue={moment("00:00:00", "HH:mm:ss")}
             onChange={this.handleTimeChange}
             style={{ marginLeft: "30px", width: "170px" }}
+            disabledHours={this.getDisabledHours}
+            hideDisabledOptions={true}
           />
         </div>
         <div className="box">
