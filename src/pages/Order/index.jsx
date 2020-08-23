@@ -1,7 +1,8 @@
 import React from "react";
-import { Button, TimePicker, Select, Modal } from "antd";
+import { Button, TimePicker, Select, Modal, Divider } from "antd";
 import { createOrder } from "../../apis/index";
 import moment from "moment";
+import "../Order/index.css";
 const { Option } = Select;
 
 class Order extends React.Component {
@@ -97,29 +98,32 @@ class Order extends React.Component {
     const { username, phoneNumber, cars } = this.state.userInfo;
 
     return (
-      <div>
-        <div>
+      <div className="creorder">
+        <h1>create order</h1>
+        <Divider style={{ marginBottom: "40px" }} />
+        <div className="box">
           <h3>Parking Lot Infomation</h3>
           <label>Parking Lot Name : South Software Park Parking lot</label>
           <br />
           <label>Parking Space Number : {this.state.parkingnumber}</label>
         </div>
-        <div>
+        <div className="box">
           <h3>Arrival Time</h3>
           <TimePicker
             value={this.state.timePickerValue}
             defaultValue={moment("00:00:00", "HH:mm:ss")}
             onChange={this.handleTimeChange}
+            style={{ marginLeft: "30px", width: "170px" }}
           />
         </div>
-        <div>
+        <div className="box">
           <h3>Personal Infomation</h3>
           <label>Name : {username}</label>
           <br />
           <label>Phone Number : {phoneNumber}</label>
           <br />
           <label>License Number : </label>
-          <Select onChange={this.handleChangeCarNumber}>
+          <Select onChange={this.handleChangeCarNumber} style={{ width: "8%" }}>
             {(cars || []).map((item) => (
               <Option value={item.carNumber} key={item.id}>
                 {item.carNumber}
@@ -127,8 +131,13 @@ class Order extends React.Component {
             ))}
           </Select>
         </div>
-        <div>
-          <Button type="primary" htmlType="submit" onClick={this.handleSubmit}>
+        <div className="btn">
+          <Button
+            type="primary"
+            htmlType="submit"
+            onClick={this.handleSubmit}
+            style={{ width: "6%", height: "40px" }}
+          >
             Submit
           </Button>
         </div>

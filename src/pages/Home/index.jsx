@@ -51,7 +51,7 @@ class Home extends React.Component {
     return (
       <div className="main">
         <Space size={20} direction="vertical" align="center">
-          <div>
+          <div style={{marginTop:"35%"}}>
             <h1>South Software Park Parking reservation</h1>
           </div>
           <div>
@@ -62,7 +62,7 @@ class Home extends React.Component {
                 fontSize: "30px",
                 width: "150px",
                 height: "60px",
-                marginTop: "20%",
+                marginTop: "25%",
                 borderRadius: "7px",
               }}
             >
