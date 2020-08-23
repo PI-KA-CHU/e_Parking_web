@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Space, Modal, Input, Layout, message } from "antd";
 import { getUserInfo } from "../../apis";
-import style from "./home.css";
+import "./home.css";
 import QueueAnim from 'rc-queue-anim';
 
 const { Header, Content } = Layout;
