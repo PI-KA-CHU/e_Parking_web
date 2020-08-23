@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Space, Modal, Input } from "antd";
+import { Button, Space, Modal, Input, message } from "antd";
 import { getUserInfo } from "../../apis";
 import style from "./home.css";
 
@@ -22,23 +22,22 @@ class Home extends React.Component {
   };
 
   handleOk = (e) => {
-    getUserInfo(this.state.userId).then((res) => {
-      if (res.status === 200) {
-        this.props.history.push({
-          pathname: "/reserve",
-          state: { userId: this.state.userId },
-        });
+    getUserInfo(this.state.userId)
+      .then((res) => {
+        if (res.status === 200) {
+          sessionStorage.setItem("userId", this.state.userId);
+          this.props.history.push({
+            pathname: "/reserve",
+          });
 
-        this.setState({
-          visible: false,
-        });
-      } else {
-        this.setState({
-          inputTitle: "error id, please enter again",
-        });
-        console.log("input id error");
-      }
-    });
+          this.setState({
+            visible: false,
+          });
+        }
+      })
+      .catch((err) => {
+        message.error("User id is not exist");
+      });
   };
 
   handleCancel = (e) => {
@@ -51,7 +50,7 @@ class Home extends React.Component {
     return (
       <div className="main">
         <Space size={20} direction="vertical" align="center">
-          <div style={{marginTop:"35%"}}>
+          <div style={{ marginTop: "35%" }}>
             <h1>South Software Park Parking reservation</h1>
           </div>
           <div>

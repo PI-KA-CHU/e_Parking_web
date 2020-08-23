@@ -8,7 +8,7 @@ import {
 import { Button, Radio, List, Space } from "antd";
 import { Link } from "react-router-dom";
 import Websocket from "react-websocket";
-import style from "./position.css"
+import style from "./position.css";
 
 class ParkingPositionList extends React.Component {
   constructor(props) {
@@ -23,7 +23,7 @@ class ParkingPositionList extends React.Component {
   }
 
   componentDidMount() {
-    let { userId } = this.props;
+    const userId = sessionStorage.getItem("userId");
     getAllParkingPosition(this.state.parkingLotId).then((res) => {
       this.setState({
         parkingPostion: res.data,
@@ -82,14 +82,18 @@ class ParkingPositionList extends React.Component {
                 <div className="door">
                   <label>入口</label>
                 </div>
-                <Radio.Group onChange={this.changePosition} buttonStyle="solid" size="large">
+                <Radio.Group
+                  onChange={this.changePosition}
+                  buttonStyle="solid"
+                  size="large"
+                >
                   <List
                     grid={{
                       gutter: 0,
-                      column: 8
+                      column: 8,
                     }}
                     dataSource={this.state.parkingPostion}
-                    renderItem={item => (
+                    renderItem={(item) => (
                       <List.Item>
                         <ParkingPositionItem
                           key={item.id}
@@ -124,7 +128,6 @@ class ParkingPositionList extends React.Component {
               </Button>
             </Link>
           </Space>
-
         </div>
       );
     }

@@ -3,6 +3,7 @@ import { Button, TimePicker, Select, Modal, Divider } from "antd";
 import { createOrder } from "../../apis/index";
 import moment from "moment";
 import "../Order/index.css";
+import { FormOutlined } from "@ant-design/icons";
 const { Option } = Select;
 
 class Order extends React.Component {
@@ -99,7 +100,10 @@ class Order extends React.Component {
 
     return (
       <div className="creorder">
-        <h1>create order</h1>
+        <h1>
+          <FormOutlined style={{ marginRight: "10px" }} />
+          create order
+        </h1>
         <Divider style={{ marginBottom: "40px" }} />
         <div className="box">
           <h3>Parking Lot Infomation</h3>
