@@ -3,18 +3,12 @@
 }
 
 #reserve_pane {
-    text-align: center;
     width: 1000px;
 }
 
-#reserve_title {
-    text-align: center;
-}
-
-.door {
-    text-align: center;
-    border-width: 2px;
-    border-style: ridge;
+/* Button {
+    font-size: 300px;
     width: 100px;
-    /* margin: 2% 40%; */
-}
+    height: 300px;
+    border-radius: 20%;
+} */

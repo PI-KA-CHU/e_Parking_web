@@ -4,7 +4,7 @@ import { getUserInfo } from "../../apis";
 import style from "./home.css";
 import QueueAnim from 'rc-queue-anim';
 
-const { Header, Footer, Sider, Content } = Layout;
+const { Header, Content } = Layout;
 
 
 class Home extends React.Component {

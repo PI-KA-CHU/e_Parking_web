@@ -66,42 +66,29 @@ class ParkingPositionList extends React.Component {
               this.refWebSocket = websocketMsg;
             }}
           />
-          <Space align="center" direction="vertical" size="large">
-            <div id="reserve_title">
-              <h1>South Software Park Parking lot</h1>
-            </div>
-            <div id="reserve_pane">
-              <Space align="center" direction="vertical" size="middle">
-                <div className="door">
-                  <label>入口</label>
-                </div>
-                <Radio.Group
-                  onChange={this.changePosition}
-                  buttonStyle="solid"
-                  size="large"
-                >
-                  <List
-                    grid={{
-                      gutter: 0,
-                      column: 8,
-                    }}
-                    dataSource={this.state.parkingPostion}
-                    renderItem={(item) => (
-                      <List.Item>
-                        <ParkingPositionItem
-                          key={item.id}
-                          index={item.id}
-                          status={item.status}
-                        />
-                      </List.Item>
-                    )}
-                  />
-                </Radio.Group>
-                <div className="door">
-                  <label>出口</label>
-                </div>
-              </Space>
-            </div>
+          <Space id="reserve_pane" align="center" direction="vertical" size="middle">
+            <Radio.Group
+              onChange={this.changePosition}
+              buttonStyle="solid"
+              size="large"
+            >
+              <List
+                grid={{
+                  gutter: 0,
+                  column: 8,
+                }}
+                dataSource={this.state.parkingPostion}
+                renderItem={(item) => (
+                  <List.Item>
+                    <ParkingPositionItem
+                      key={item.id}
+                      index={item.id}
+                      status={item.status}
+                    />
+                  </List.Item>
+                )}
+              />
+            </Radio.Group>
             <Link
               to={{
                 pathname: "/order",
@@ -116,6 +103,13 @@ class ParkingPositionList extends React.Component {
                 type="primary"
                 disabled={!this.state.isSelected}
                 onClick={this.handleSubmit}
+                style={{
+                  fontSize: "15px",
+                  width: "80px",
+                  height: "40px",
+                  marginTop: "5%",
+                  borderRadius: "3px",
+                }}
               >
                 Submit
               </Button>

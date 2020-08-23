@@ -1,6 +1,5 @@
 .main {
   text-align: center;
-  /* background-image: url(../../image/home.jpeg); */
   background-repeat: no-repeat;
   position: fixed;
   top: 0;
@@ -23,10 +22,3 @@ img {
   width: 100px;
   height: 50px;
 }
-/* 
-.button_submit {
-    font-size: 30px;
-    width: 150px;
-    height: 60px;
-    border-radius: 7px;
-} */
