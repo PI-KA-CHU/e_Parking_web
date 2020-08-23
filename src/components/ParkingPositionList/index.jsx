@@ -8,7 +8,7 @@ import {
 import { Button, Radio, List, Space } from "antd";
 import { Link } from "react-router-dom";
 import Websocket from "react-websocket";
-import style from "./position.css"
+import style from "./position.css";
 
 class ParkingPositionList extends React.Component {
   constructor(props) {
@@ -23,7 +23,7 @@ class ParkingPositionList extends React.Component {
   }
 
   componentDidMount() {
-    let { userId } = this.props;
+    const userId = sessionStorage.getItem("userId");
     getAllParkingPosition(this.state.parkingLotId).then((res) => {
       this.setState({
         parkingPostion: res.data,
@@ -44,21 +44,12 @@ class ParkingPositionList extends React.Component {
   };
 
   handleSubmit = () => {
-    reserveParkingPosition(this.state.positionindex).then((res) => {
-      if (res.status === 200) {
-      } else {
-        this.error(res.response.data);
-      }
-    });
-    this.refWebSocket.sendMessage("reserve parkingPosition");
+    this.refWebSocket.sendMessage(this.state.positionindex);
   };
 
   handleMessage = (data) => {
-    console.log("[recieve message]：" + data);
-    getAllParkingPosition(this.state.parkingLotId).then((res) => {
-      this.setState({
-        parkingPostion: res.data,
-      });
+    this.setState({
+      parkingPostion: JSON.parse(data),
     });
   };
 
@@ -67,7 +58,9 @@ class ParkingPositionList extends React.Component {
       return (
         <div id="main">
           <Websocket
-            url="ws://localhost:8088/websocket/27"
+            url={`ws://localhost:8088/websocket/${sessionStorage.getItem(
+              "userId"
+            )}`}
             onMessage={this.handleMessage}
             ref={(websocketMsg) => {
               this.refWebSocket = websocketMsg;
@@ -82,14 +75,18 @@ class ParkingPositionList extends React.Component {
                 <div className="door">
                   <label>入口</label>
                 </div>
-                <Radio.Group onChange={this.changePosition} buttonStyle="solid" size="large">
+                <Radio.Group
+                  onChange={this.changePosition}
+                  buttonStyle="solid"
+                  size="large"
+                >
                   <List
                     grid={{
                       gutter: 0,
-                      column: 8
+                      column: 8,
                     }}
                     dataSource={this.state.parkingPostion}
-                    renderItem={item => (
+                    renderItem={(item) => (
                       <List.Item>
                         <ParkingPositionItem
                           key={item.id}
@@ -124,7 +121,6 @@ class ParkingPositionList extends React.Component {
               </Button>
             </Link>
           </Space>
-
         </div>
       );
     }

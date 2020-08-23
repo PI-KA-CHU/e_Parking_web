@@ -25,7 +25,8 @@ label {
   margin-bottom: 40px;
 }
 
-.btn{
+.btn {
   text-align: center;
-    margin-top: 2%;
+  margin-top: 2%;
+  font-size: 20px;
 }

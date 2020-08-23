@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Space, Modal, Input, Layout } from "antd";
+import { Button, Space, Modal, Input, Layout, message } from "antd";
 import { getUserInfo } from "../../apis";
 import style from "./home.css";
 import QueueAnim from 'rc-queue-anim';
@@ -26,23 +26,22 @@ class Home extends React.Component {
   };
 
   handleOk = (e) => {
-    getUserInfo(this.state.userId).then((res) => {
-      if (res.status === 200) {
-        this.props.history.push({
-          pathname: "/reserve",
-          state: { userId: this.state.userId },
-        });
+    getUserInfo(this.state.userId)
+      .then((res) => {
+        if (res.status === 200) {
+          sessionStorage.setItem("userId", this.state.userId);
+          this.props.history.push({
+            pathname: "/reserve",
+          });
 
-        this.setState({
-          visible: false,
-        });
-      } else {
-        this.setState({
-          inputTitle: "error id, please enter again",
-        });
-        console.log("input id error");
-      }
-    });
+          this.setState({
+            visible: false,
+          });
+        }
+      })
+      .catch((err) => {
+        message.error("User id is not exist");
+      });
   };
 
   handleCancel = (e) => {
@@ -93,7 +92,6 @@ class Home extends React.Component {
                       onChange={this.handleChange}
                     />
                   </Modal>
-
                 </div>
               </QueueAnim>
             </Space>
