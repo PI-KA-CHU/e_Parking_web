@@ -1,7 +1,11 @@
 import React from "react";
-import { Button, Space, Modal, Input, message } from "antd";
+import { Button, Space, Modal, Input, Layout, message } from "antd";
 import { getUserInfo } from "../../apis";
 import "./home.css";
+import QueueAnim from 'rc-queue-anim';
+
+const { Header, Footer, Sider, Content } = Layout;
+
 
 class Home extends React.Component {
   constructor(props) {
@@ -48,39 +52,51 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div className="main">
-        <Space size={20} direction="vertical" align="center">
-          <div style={{ marginTop: "35%" }}>
-            <h1>South Software Park Parking reservation</h1>
-          </div>
-          <div>
-            <Button
-              type="primary"
-              onClick={this.showModal}
-              style={{
-                fontSize: "30px",
-                width: "150px",
-                height: "60px",
-                marginTop: "25%",
-                borderRadius: "7px",
-              }}
-            >
-              Reserve
-            </Button>
-            <Modal
-              title="Login"
-              visible={this.state.visible}
-              onOk={this.handleOk}
-              onCancel={this.handleCancel}
-            >
-              <h3>{this.state.inputTitle}</h3>
-              <Input
-                placeholder="please enter your id"
-                onChange={this.handleChange}
-              />
-            </Modal>
-          </div>
-        </Space>
+      <div>
+        <Layout className="main">
+          <Header>
+            <div id="logo">
+              <img src={require("../../image/logowhite.png")} />
+            </div>
+          </Header>
+          <Content>
+            <Space size="small" direction="vertical" align="center">
+              <QueueAnim delay={700} className="queue-simple">
+                <div style={{ marginTop: "20%" }} key="a">
+                  <h1>South Software Park Parking reservation</h1>
+                </div>
+                <div key="b">
+                  <Button
+                    type="primary"
+                    onClick={this.showModal}
+                    className="button_submit"
+                    style={{
+                      fontSize: "30px",
+                      width: "150px",
+                      height: "60px",
+                      marginTop: "5%",
+                      borderRadius: "7px",
+                    }}
+                  >
+                    Reserve
+                </Button>
+                  <Modal
+                    title="Login"
+                    visible={this.state.visible}
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}
+                  >
+                    <h3>{this.state.inputTitle}</h3>
+                    <Input
+                      placeholder="please enter your id"
+                      onChange={this.handleChange}
+                    />
+                  </Modal>
+                </div>
+              </QueueAnim>
+            </Space>
+          </Content>
+        </Layout>
       </div>
     );
   }
