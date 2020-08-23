@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Space, Modal, Input } from "antd";
 import { getUserInfo } from "../../apis";
-import style from "./home.css"
+import style from "./home.css";
 
 class Home extends React.Component {
   constructor(props) {
@@ -9,7 +9,6 @@ class Home extends React.Component {
     this.state = { inputTitle: "Please enter your id" };
   }
   // South Software Park Parking lot
-
 
   showModal = () => {
     this.setState({
@@ -20,11 +19,10 @@ class Home extends React.Component {
   handleChange = (e) => {
     this.setState({
       userId: e.target.value,
-    })
-  }
+    });
+  };
 
   handleOk = (e) => {
-
     getUserInfo(this.state.userId).then((res) => {
       if (res.status === 200) {
         this.props.history.push("/reserve");
@@ -34,14 +32,14 @@ class Home extends React.Component {
         });
       } else {
         this.setState({
-          inputTitle: "error id, please enter again"
-        })
+          inputTitle: "error id, please enter again",
+        });
         console.log("input id error");
       }
     });
   };
 
-  handleCancel = e => {
+  handleCancel = (e) => {
     this.setState({
       visible: false,
     });
@@ -52,20 +50,33 @@ class Home extends React.Component {
       <div className="main">
         <Space size={20} direction="vertical" align="center">
           <div>
-            <h1>ParkingLot Reserve System</h1>
+            <h1>South Software Park Parking reservation</h1>
           </div>
           <div>
-            <Button type="primary" onClick={this.showModal}>
+            <Button
+              type="primary"
+              onClick={this.showModal}
+              style={{
+                fontSize: "30px",
+                width: "150px",
+                height: "60px",
+                marginTop: "20%",
+                borderRadius: "7px",
+              }}
+            >
               Reserve
-              </Button>
+            </Button>
             <Modal
-              title="Basic Modal"
+              title="Login"
               visible={this.state.visible}
               onOk={this.handleOk}
               onCancel={this.handleCancel}
             >
               <h3>{this.state.inputTitle}</h3>
-              <Input placeholder="please enter your id" onChange={this.handleChange} />
+              <Input
+                placeholder="please enter your id"
+                onChange={this.handleChange}
+              />
             </Modal>
           </div>
         </Space>
