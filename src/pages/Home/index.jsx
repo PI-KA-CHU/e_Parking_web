@@ -8,7 +8,6 @@ class Home extends React.Component {
     super(props);
     this.state = { inputTitle: "Please enter your id" };
   }
-  // South Software Park Parking lot
 
 
   showModal = () => {

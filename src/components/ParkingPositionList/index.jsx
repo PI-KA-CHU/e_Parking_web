@@ -5,9 +5,10 @@ import {
   getUserInfo,
   reserveParkingPosition,
 } from "../../apis/index";
-import { Button, Radio, Modal } from "antd";
+import { Button, Radio, List, Space } from "antd";
 import { Link } from "react-router-dom";
 import Websocket from "react-websocket";
+import style from "./position.css"
 
 
 class ParkingPositionList extends React.Component {
@@ -66,7 +67,7 @@ class ParkingPositionList extends React.Component {
   render() {
     if (this.state.parkingPostion) {
       return (
-        <div>
+        <div id="main">
           <Websocket
             url="ws://localhost:8088/websocket/27"
             onMessage={this.handleMessage}
@@ -74,33 +75,58 @@ class ParkingPositionList extends React.Component {
               this.refWebSocket = websocketMsg;
             }}
           />
-          <Radio.Group onChange={this.changePosition} buttonStyle="solod">
-            {this.state.parkingPostion.map((item) => (
-              <ParkingPositionItem
-                key={item.id}
-                index={item.id}
-                status={item.status}
-              />
-            ))}
-          </Radio.Group>
-          <Link
-            to={{
-              pathname: "/order",
-              state: {
-                positionindex: this.state.positionindex,
-                userInfo: this.state.userInfo,
-                parkingLotId: this.state.parkingLotId,
-              },
-            }}
-          >
-            <Button
-              type="primary"
-              disabled={!this.state.isSelected}
-              onClick={this.handleSubmit}
+          <Space align="center" direction="vertical" size="large">
+            <div id="reserve_title">
+              <h1>South Software Park Parking lot</h1>
+            </div>
+            <div id="reserve_pane">
+              <Space align="center" direction="vertical" size="middle">
+                <div className="door">
+                  <label>入口</label>
+                </div>
+                <Radio.Group onChange={this.changePosition} buttonStyle="solid" size="large">
+                  <List
+                    grid={{
+                      gutter: 0,
+                      column: 8
+                    }}
+                    dataSource={this.state.parkingPostion}
+                    renderItem={item => (
+                      <List.Item>
+                        <ParkingPositionItem
+                          key={item.id}
+                          index={item.id}
+                          status={item.status}
+                        />
+                      </List.Item>
+                    )}
+                  />
+                </Radio.Group>
+                <div className="door">
+                  <label>出口</label>
+                </div>
+              </Space>
+            </div>
+            <Link
+              to={{
+                pathname: "/order",
+                state: {
+                  positionindex: this.state.positionindex,
+                  userInfo: this.state.userInfo,
+                  parkingLotId: this.state.parkingLotId,
+                },
+              }}
             >
-              Submit
-            </Button>
-          </Link>
+              <Button
+                type="primary"
+                disabled={!this.state.isSelected}
+                onClick={this.handleSubmit}
+              >
+                Submit
+              </Button>
+            </Link>
+          </Space>
+
         </div>
       );
     }
