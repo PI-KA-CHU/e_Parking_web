@@ -44,21 +44,12 @@ class ParkingPositionList extends React.Component {
   };
 
   handleSubmit = () => {
-    reserveParkingPosition(this.state.positionindex).then((res) => {
-      if (res.status === 200) {
-      } else {
-        this.error(res.response.data);
-      }
-    });
-    this.refWebSocket.sendMessage("reserve parkingPosition");
+    this.refWebSocket.sendMessage(this.state.positionindex);
   };
 
   handleMessage = (data) => {
-    console.log("[recieve message]：" + data);
-    getAllParkingPosition(this.state.parkingLotId).then((res) => {
-      this.setState({
-        parkingPostion: res.data,
-      });
+    this.setState({
+      parkingPostion: JSON.parse(data),
     });
   };
 
@@ -67,7 +58,9 @@ class ParkingPositionList extends React.Component {
       return (
         <div id="main">
           <Websocket
-            url="ws://localhost:8088/websocket/27"
+            url={`ws://localhost:8088/websocket/${sessionStorage.getItem(
+              "userId"
+            )}`}
             onMessage={this.handleMessage}
             ref={(websocketMsg) => {
               this.refWebSocket = websocketMsg;
