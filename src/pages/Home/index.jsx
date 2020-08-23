@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Space, Modal, Input, message } from "antd";
 import { getUserInfo } from "../../apis";
-import style from "./home.css";
+import "./home.css";
 
 class Home extends React.Component {
   constructor(props) {

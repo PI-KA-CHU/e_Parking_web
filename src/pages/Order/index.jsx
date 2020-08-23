@@ -1,9 +1,11 @@
 import React from "react";
-import { Button, TimePicker, Select, Modal, Divider } from "antd";
+
+import { Button, TimePicker, Select, Modal, Divider, message } from "antd";
 import { createOrder } from "../../apis/index";
 import moment from "moment";
 import "../Order/index.css";
 import { FormOutlined } from "@ant-design/icons";
+import Websocket from "react-websocket";
 const { Option } = Select;
 
 class Order extends React.Component {
@@ -17,6 +19,8 @@ class Order extends React.Component {
       timePickerValue: "",
       parkingLotId: "",
       formNumber: "",
+      isSubmit: false,
+      isTimeout: false,
     };
   }
 
@@ -27,7 +31,16 @@ class Order extends React.Component {
       userInfo: superstate.userInfo,
       parkingLotId: superstate.parkingLotId,
     });
+    setTimeout(() => {
+      if (!this.state.isSubmit) {
+        this.orderWebSocket.sendMessage("timeout " + this.state.parkingnumber);
+        message.error("Time Out");
+        this.setState({ isTimeout: true });
+      }
+    }, 5000);
   }
+
+  handleMessage = (data) => {};
 
   formatTime = (t) => {
     if (t < 10) return `0${t}`;
@@ -73,6 +86,7 @@ class Order extends React.Component {
         this.setState({
           formNumber:
             order.customerId + order.carId + this.state.parkingLotId * 100,
+          isSubmit: true,
         });
         this.success("Reserved a space successfully");
       } else {
@@ -100,6 +114,15 @@ class Order extends React.Component {
 
     return (
       <div className="creorder">
+        <Websocket
+          url={`ws://localhost:8088/websocket/${sessionStorage.getItem(
+            "userId"
+          )}`}
+          onMessage={this.handleMessage}
+          ref={(websocketMsg) => {
+            this.orderWebSocket = websocketMsg;
+          }}
+        />
         <h1>
           <FormOutlined style={{ marginRight: "10px" }} />
           create order
@@ -141,6 +164,7 @@ class Order extends React.Component {
             htmlType="submit"
             onClick={this.handleSubmit}
             style={{ width: "6%", height: "40px" }}
+            disabled={this.state.isTimeout}
           >
             Submit
           </Button>

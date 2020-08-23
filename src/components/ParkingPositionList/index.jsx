@@ -3,12 +3,11 @@ import ParkingPositionItem from "../ParkingPositionItem";
 import {
   getAllParkingPosition,
   getUserInfo,
-  reserveParkingPosition,
 } from "../../apis/index";
 import { Button, Radio, List, Space } from "antd";
 import { Link } from "react-router-dom";
 import Websocket from "react-websocket";
-import style from "./position.css";
+import "./position.css";
 
 class ParkingPositionList extends React.Component {
   constructor(props) {
@@ -48,6 +47,7 @@ class ParkingPositionList extends React.Component {
   };
 
   handleMessage = (data) => {
+    console.log(data);
     this.setState({
       parkingPostion: JSON.parse(data),
     });
