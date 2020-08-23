@@ -20,7 +20,6 @@ class Order extends React.Component {
       parkingLotId: "",
       formNumber: "",
       isSubmit: false,
-      isTimeout: false,
     };
   }
 
@@ -32,12 +31,18 @@ class Order extends React.Component {
       parkingLotId: superstate.parkingLotId,
     });
     setTimeout(() => {
-      if (!this.state.isSubmit) {
+      if (!this.state.isSubmit && this.orderWebSocket) {
         this.orderWebSocket.sendMessage("timeout " + this.state.parkingnumber);
         message.error("Time Out");
-        this.setState({ isTimeout: true });
+        this.setState({ isSubmit: true });
       }
-    }, 5000);
+    }, 60000);
+  }
+
+  componentWillUnmount() {
+    if (!this.state.isSubmit) {
+      this.orderWebSocket.sendMessage("timeout " + this.state.parkingnumber);
+    }
   }
 
   handleMessage = (data) => {};
@@ -81,18 +86,20 @@ class Order extends React.Component {
       startTime: this.formatDate(this.state.timePickerValue._d),
       parkingPositionId: this.state.parkingnumber,
     };
-    createOrder(order).then((res) => {
-      if (res.status === 200) {
-        this.setState({
-          formNumber:
-            order.customerId + order.carId + this.state.parkingLotId * 100,
-          isSubmit: true,
-        });
-        this.success("Reserved a space successfully");
-      } else {
-        this.error(res.response.data);
-      }
-    });
+    createOrder(order)
+      .then((res) => {
+        if (res.status === 200) {
+          this.setState({
+            formNumber:
+              order.customerId + order.carId + this.state.parkingLotId * 100,
+            isSubmit: true,
+          });
+          this.success("Reserved a space successfully");
+        }
+      })
+      .catch((err) => {
+        message.error("This car is reserved!");
+      });
   };
 
   success = () => {
@@ -100,12 +107,6 @@ class Order extends React.Component {
       content:
         "Reservation successful. The order number is : " +
         this.state.formNumber,
-    });
-  };
-
-  error = (msg) => {
-    Modal.error({
-      title: msg,
     });
   };
 
@@ -164,7 +165,7 @@ class Order extends React.Component {
             htmlType="submit"
             onClick={this.handleSubmit}
             style={{ width: "6%", height: "40px" }}
-            disabled={this.state.isTimeout}
+            disabled={this.state.isSubmit}
           >
             Submit
           </Button>

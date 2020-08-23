@@ -47,7 +47,6 @@ class ParkingPositionList extends React.Component {
   };
 
   handleMessage = (data) => {
-    console.log(data);
     this.setState({
       parkingPostion: JSON.parse(data),
     });
